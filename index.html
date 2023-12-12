@@ -10,10 +10,95 @@
           align-items: center;
           background-color: #d2e4e6;
       }
+
+      .center {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+      }
   </style>
   <title>Breakpoint Ninja</title>
 </head>
 <body>
-<img src="logo.svg" alt="Ninja breaking a point" width="512" height="512">
+<div>
+<!--  <svg-->
+<!--    class="center"-->
+<!--    width="512"-->
+<!--    height="512"-->
+<!--    xmlns="http://www.w3.org/2000/svg">-->
+<!--    <defs-->
+<!--      id="defs1" />-->
+<!--    <g-->
+<!--      style="fill:#f3f3f3;fill-opacity:0.919626;stroke:#000000;stroke-width:0.05"-->
+<!--      id="g1"-->
+<!--      transform="matrix(3.7795275,0,0,3.7795275,227.77165,226.77165)">-->
+<!--      <path-->
+<!--        id="path3"-->
+<!--        style="fill:#f3f3f3;fill-opacity:0.819626;stroke:#b1cbcf;stroke-width:0"-->
+<!--        d="M 7.7333333,-60 C -29.674754,-60.000002 -60.000002,-29.674754 -60,7.7333333 c 0.03934,5.7554207 3.368059,11.5772587 6.797517,15.1902877 3.429458,3.613029 8.769006,8.357629 14.898316,8.357629 7.937492,0 16.039694,-7.672917 21.695833,-7.672916 7.4083287,0 13.0805948,8.489127 19.0898886,9.097165 5.0015405,0.506071 14.7767834,-5.128418 19.8038624,-6.715916 5.027078,-1.587498 12.700004,-1.852082 17.991666,-1.322916 5.291661,0.529166 13.035882,2.571561 17.197917,2.645833 4.162035,0.07427 9.703527,-0.426147 12.662276,-2.137337 2.95875,-1.71119 5.274446,-9.779487 5.329391,-17.4418297 C 75.466669,-29.674755 45.141421,-60.000002 7.7333333,-60 Z" />-->
+<!--    </g>-->
+<!--  </svg>-->
+
+  <canvas id="matrix-rain"></canvas>
+
+  <img src="logo.svg" alt="Ninja breaking a point" width="512" height="512"
+       class="center">
+
+  <div class="center">
+    <svg xmlns="http://www.w3.org/2000/svg"
+         width="512"
+         height="512">
+      <defs>
+        <radialGradient id="gradient" cx="50%" cy="50%" r="50%">
+          <stop stop-color="#d2e4e6" stop-opacity="0" offset="60%" />
+          <stop stop-color="#d2e4e6" stop-opacity="1" offset="100%" />
+        </radialGradient>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#gradient)" />
+    </svg>
+  </div>
+</div>
+<script>
+  // Initialising the canvas
+  const canvas = document.querySelector("#matrix-rain");
+  ctx = canvas.getContext("2d");
+
+  // Setting the width and height of the canvas
+  canvas.width = 512;
+  canvas.height = 512;
+
+  // Setting up the letters
+  let letters = "01";
+  letters = letters.split("");
+
+  // Setting up the columns
+  const fontSize = 12,
+    columns = canvas.width / fontSize;
+
+  // Setting up the drops
+  const drops = [];
+  for (let i = 0; i < columns; i++) {
+    drops[i] = Math.floor(Math.random() * canvas.height) - canvas.height;
+  }
+
+  // Setting up the draw function
+  function draw() {
+    ctx.fillStyle = "rgba(210,228,230, 0.05)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    for (let i = 0; i < drops.length; i++) {
+      const text = letters[Math.floor(Math.random() * letters.length)];
+      ctx.fillStyle = "#000";
+      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+      drops[i]++;
+      if (drops[i] * fontSize > canvas.height && Math.random() > .95) {
+        drops[i] = 0;
+      }
+    }
+  }
+
+  // Loop the animation
+  setInterval(draw, 33);
+</script>
 </body>
 </html>
